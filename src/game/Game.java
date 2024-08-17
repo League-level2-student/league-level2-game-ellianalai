@@ -13,11 +13,13 @@ public class Game {
 	public Game() {
 		frame = new JFrame();
 		panel = new GamePanel();
+		
 	}
 	
 	void setup() {
 		frame.setSize(WIDTH, HEIGHT);
 		frame.add(panel);
+		frame.addKeyListener(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
@@ -26,5 +28,7 @@ public class Game {
 		Game g = new Game();
 		g.setup();
 	}
+
+	
 	
 }

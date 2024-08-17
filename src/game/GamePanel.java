@@ -3,11 +3,13 @@ package game;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener{
+public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Player player;
 	Timer timer;
 	
@@ -21,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		player.draw(g);
 	}
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent arg0) {
 		repaint();		
 	}
 	
@@ -29,6 +31,37 @@ public class GamePanel extends JPanel implements ActionListener{
 	@Override
 	protected void paintComponent(Graphics g) {
 		drawPlayer(g);
+		
+	}
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_UP) {
+			System.out.println("up");
+			player.up();
+			
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+			player.down();
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			player.left();
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			player.right();
+		}
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 	

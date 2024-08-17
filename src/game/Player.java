@@ -2,22 +2,17 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Player {
+public class Player extends GameObject{
 
-	int x;
-	int y;
-	int width;
-	int height;
-
+	int move;
+	
 	public Player(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
+		super(x,y,width,height);
+		move = 100;
+		System.out.println("hi");
 	}
-
-
 
 
 	void draw(Graphics g) {
@@ -26,20 +21,24 @@ public class Player {
 
 	}
 
-	void up() {
-		y-=1;
+	public void up() {
+		y-=move;
+		super.update();
 	}
 
-	void down() {
-		y+=1;
+	public void down() {
+		y+=move;
+		super.update();
 	}
 
-	void left() {
-		x-=1;
+	public void left() {
+		x-=move;
+		super.update();
 	}
 
-	void right() {
-		x+=1;
+	public void right() {
+		x+=move;
+		super.update();
 	}
 
 
