@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +15,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer timer;
 	
 	GamePanel(){
-		player = new Player(200,200,100,100);
+		player = new Player(200,200,70,70);
 		timer = new Timer(1000/60, this);
 		timer.start();
 		
@@ -24,12 +25,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		player.update();
 		repaint();		
 	}
 	
 	
 	@Override
 	protected void paintComponent(Graphics g) {
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 		drawPlayer(g);
 		
 	}
@@ -42,26 +46,45 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_UP) {
 			System.out.println("up");
-			player.up();
+			player.direction = 0;
+			player.isWalking = true;
 			
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-			player.down();
+			player.direction = 2;
+			player.isWalking = true;
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-			player.left();
+			player.direction = 1;
+			player.isWalking = true;
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			player.right();
+			player.direction = 3;
+			player.isWalking = true;
 		}
 		
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getKeyCode()==KeyEvent.VK_UP) {
+			player.isWalking = false;
+			
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+			player.isWalking = false;
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
+			player.isWalking = false;
+		}
+		
+		else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+			player.isWalking = false;
+		}
 		
 	}
 	
