@@ -16,19 +16,24 @@ public class Player extends GameObject{
 	int currentImage;
 	int direction;
 	boolean keepDirection;
+	int imageNumber;
 	
 	public Player(int x, int y, int width, int height) {
 		super(x,y,width,height);
-		move = 2;
+		move = 3;
 		isWalking = false;
 		currentImage = 0;
 		direction = 0;
-		images = new BufferedImage[15];
+		images = new BufferedImage[12];
 
 		
-		for(int i =1; i<16; i++) {
+		for(int i =1; i<25; i++) {
+			if(i%2 ==1) {
+				imageNumber+=1;
+			}
 			try {
-				images[i-1] = ImageIO.read(new File("src/game/png/Walk (" + i + ").png"));
+				images[i-1] = ImageIO.read(new File("src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Frog (" + imageNumber + ").png"));
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -46,26 +51,26 @@ public class Player extends GameObject{
 		if(isWalking == true && direction ==1) {
 			g.drawImage(images[currentImage], x, y, -width, height, null);
 			currentImage+=1;
-			currentImage %= 15;
+			currentImage %= 12;
 			keepDirection = true;
 
 		}
 		else if(isWalking == true && direction ==3) {
 			g.drawImage(images[currentImage], x, y, width, height, null);
 			currentImage+=1;
-			currentImage %= 15;
+			currentImage %= 12;
 
 		}
 		else if(isWalking == true && direction ==2) {
 			g.drawImage(images[currentImage], x, y, width, height, null);
 			currentImage+=1;
-			currentImage %= 15;
+			currentImage %= 12;
 
 		}
 		else if(isWalking == true && direction ==0) {
 			g.drawImage(images[currentImage], x, y, width, height, null);
 			currentImage+=1;
-			currentImage %= 15;
+			currentImage %= 12;
 
 		}
 		else {
