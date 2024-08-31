@@ -44,16 +44,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_UP) {
-			System.out.println("up");
+		if(e.getKeyCode()==KeyEvent.VK_UP || e.getKeyCode()==KeyEvent.VK_SPACE) {
 			player.direction = 0;
-			player.isWalking = true;
+			player.isJumping = true;
 			
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
 			player.direction = 2;
-			player.isWalking = true;
+			player.isFalling = true;
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
@@ -69,13 +68,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_UP) {
-			player.isWalking = false;
-			
+		if(e.getKeyCode()==KeyEvent.VK_UP || e.getKeyCode()==KeyEvent.VK_SPACE) {
+			player.isJumping = false;
+			player.isFalling = true;
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-			player.isWalking = false;
+			player.isFalling = false;
 		}
 		
 		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
@@ -85,6 +84,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
 			player.isWalking = false;
 		}
+		
+		
+		
 		
 	}
 	
