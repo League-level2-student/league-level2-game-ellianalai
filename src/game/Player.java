@@ -149,9 +149,9 @@ public class Player extends GameObject {
 			isFalling = true;
 		}
 
-		if(y>=500) {
+		if(y>=485) {
 			yspeed = 0;
-			y = 500;
+			y = 485;
 			isJumping = false;
 			isFalling = false;
 		}
