@@ -19,22 +19,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Player player;
 	Timer timer;
 	Image blue;
+	Terrain terrain;
 	int x;
 	int y;
 
 	GamePanel(){
-		player = new Player(200,200,70,70);
+		player = new Player(200,200,50,50);
 		timer = new Timer(1000/60, this);
 		timer.start();
+		terrain = new Terrain(100,100,100,68);
 		background();
+		
 
 	}	
-	public void drawPlayer(Graphics g) {
-		player.draw(g);
-	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		player.update();
+		checkCollision();
 		repaint();		
 	}
 
@@ -47,7 +49,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			y = ((int)(i*64)/960) * 64;
 			g.drawImage(blue, x, y, 64, 64, null);
 		}
-		drawPlayer(g);
+		
+		terrain.draw(g);
+		player.draw(g);
+		
 		
 		
 		
@@ -62,7 +67,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_UP || e.getKeyCode()==KeyEvent.VK_SPACE) {
 			player.isJumping = true;
-			player.yspeed = -20;
+			player.yspeed = -17;
 
 		}
 
@@ -100,19 +105,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	}
 
-	void loadImage(String imageFile) {
-		System.out.println(imageFile);
-		if (needImage) {
-			try {
-				image = ImageIO.read(this.getClass().getResourceAsStream(imageFile));
-				gotImage = true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Image not found");
-			}
-			needImage = false;
-		}
-	}
 	
 	void background() {
 		try {
@@ -121,6 +113,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 		catch (Exception e) {
 
+		}
+	}
+	
+	void checkCollision() {
+		
+		if(player.collisionBox.intersects(terrain.collisionBox)) {
+			
+			player.onSurface = true;
+		}
+		
+		else {
+			player.onSurface = false;
 		}
 	}
 

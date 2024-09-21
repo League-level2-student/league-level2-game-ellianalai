@@ -8,7 +8,7 @@ public class Game {
 	GamePanel panel;
 	
 	public static final int WIDTH = 960;
-	public static final int HEIGHT = 576;
+	public static final int HEIGHT = 600;
 	
 	public Game() {
 		frame = new JFrame();

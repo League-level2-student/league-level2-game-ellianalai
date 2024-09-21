@@ -139,6 +139,7 @@ public class Player extends GameObject {
 	public void jumping() {
 		if(onSurface) {
 			yspeed = 0;
+			
 		}
 		else {
 			yspeed+=1;
@@ -149,9 +150,9 @@ public class Player extends GameObject {
 			isFalling = true;
 		}
 
-		if(y>=485) {
+		if(y>=523) {
 			yspeed = 0;
-			y = 485;
+			y = 523;
 			isJumping = false;
 			isFalling = false;
 		}
@@ -163,16 +164,16 @@ public class Player extends GameObject {
 
 	public void left() {
 		x -= move;
-		if (x <= 0) {
-			x = 0;
+		if (x <= 50) {
+			x = 50;
 		}
 		super.update();
 	}
 
 	public void right() {
 		x += move;
-		if (x >= 750) {
-			x = 750;
+		if (x >= 910) {
+			x = 910;
 		}
 		super.update();
 	}

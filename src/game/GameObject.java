@@ -9,20 +9,20 @@ public class GameObject {
 	int width;
 	int height;
 	int speed = 0;
-	Rectangle rect;
+	Rectangle collisionBox;
 	
 	public GameObject(int x,int y, int width,int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		rect = new Rectangle(x,y,width,height);
+		collisionBox = new Rectangle(x,y,width,height);
 		
 		
 	}
 	
 	void update() {
-		rect.setBounds(x, y, width, height);
+		collisionBox.setBounds(x, y, width, height);
 	}
 
 }
