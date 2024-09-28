@@ -28,6 +28,7 @@ public class Player extends GameObject {
 	int yspeed;
 	boolean onSurface = false;
 	boolean isLeft;
+	boolean isIdle;
 
 	public Player(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -35,13 +36,14 @@ public class Player extends GameObject {
 		isWalking = false;
 		isJumping = false;
 		isFalling = false;
+		isIdle = true;
 		walkCurrent = 0;
 		idleCurrent = 0;
 		direction = 0;
 		walkImages = new BufferedImage[36];
 		jumpImages = new BufferedImage[7];
 		idleImages = new BufferedImage[55];
-
+		
 
 		walk();
 		jump();
@@ -52,6 +54,7 @@ public class Player extends GameObject {
 	}
 
 	void draw(Graphics g) {
+		System.out.println(isFalling);
 
 		//		g.setColor(Color.BLUE);
 		//		g.fillRect(x, y, width, height);
@@ -87,16 +90,18 @@ public class Player extends GameObject {
 			g.drawImage(jumpImages[0], x, y, -width, height, null);
 		}
 		
-		} else {
+		}
+		
+		else {
 
-			if(isLeft) {
+			if(isLeft && isIdle) {
 				g.drawImage(idleImages[idleCurrent], x, y, -width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
 				keepDirection = true;
 			}
 
-			else {
+			else if (isIdle && isLeft == false){
 				g.drawImage(idleImages[idleCurrent], x, y, width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
@@ -139,22 +144,31 @@ public class Player extends GameObject {
 	public void jumping() {
 		if(onSurface) {
 			yspeed = 0;
+			isFalling = false;
+			isJumping = false;
+			isIdle = true;
+			
 			
 		}
 		else {
 			yspeed+=1;
+			isIdle = false;
+			isFalling = true;
 		}
 		y+=yspeed;
 
 		if(yspeed>0) {
+			isIdle = false;
 			isFalling = true;
 		}
-
+		
+		
 		if(y>=523) {
 			yspeed = 0;
 			y = 523;
 			isJumping = false;
 			isFalling = false;
+			isIdle = true;
 		}
 
 		if(y<=0) {
