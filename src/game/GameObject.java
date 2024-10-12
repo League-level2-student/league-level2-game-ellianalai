@@ -11,6 +11,7 @@ public class GameObject {
 	int speed = 0;
 	Rectangle collisionBox;
 	
+	
 	public GameObject(int x,int y, int width,int height) {
 		this.x = x;
 		this.y = y;

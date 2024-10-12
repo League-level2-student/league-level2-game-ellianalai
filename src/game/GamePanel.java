@@ -35,8 +35,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		player.update();
 		checkCollision();
+		player.update();
 		repaint();		
 	}
 
@@ -128,7 +128,50 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 		if(player.collisionBox.intersects(terrain.collisionBox)) {
 			
-			player.onSurface = true;
+			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
+				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
+				player.yspeed = 0;
+				player.isFalling = true;
+				
+			} 
+			
+			else {
+				
+			}
+			
+			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
+				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
+				player.yspeed = 0;
+				player.isFalling = true;
+				
+			} 
+			
+			else {
+				
+			}
+			
+			if(player.collisionBoxes[2].intersects(terrain.collisionBox)) {
+				player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
+				player.onSurface = true;
+				
+			} 
+			
+			else {
+				
+			}
+			
+			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
+				System.out.println("Collision");
+				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
+				player.yspeed = 0;
+				player.isFalling = true;
+			} 
+			
+			else {
+				
+			}
+			
+			
 		}
 		
 		else {

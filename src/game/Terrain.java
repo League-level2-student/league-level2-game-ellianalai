@@ -27,5 +27,10 @@ public class Terrain extends GameObject{
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	void update() {
+		collisionBox.setBounds(x, y, width, height/2);
+	}
 
 }

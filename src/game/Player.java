@@ -3,6 +3,7 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,8 @@ public class Player extends GameObject {
 	int move;
 	boolean isWalking;
 	BufferedImage[] walkImages;
-	BufferedImage[] jumpImages;
 	BufferedImage[] idleImages;
+	Rectangle [] collisionBoxes;
 	int walkCurrent;
 	int idleCurrent;
 	int direction;
@@ -25,10 +26,14 @@ public class Player extends GameObject {
 	boolean isJumping;
 	boolean isFalling;
 	Image fall;
+	Image jumpImage;
 	int yspeed;
+	int xspeed;
 	boolean onSurface = false;
 	boolean isLeft;
 	boolean isIdle;
+	
+	
 
 	public Player(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -41,8 +46,30 @@ public class Player extends GameObject {
 		idleCurrent = 0;
 		direction = 0;
 		walkImages = new BufferedImage[36];
-		jumpImages = new BufferedImage[7];
 		idleImages = new BufferedImage[55];
+		
+		collisionBoxes = new Rectangle[4];
+		
+		for(int i = 0; i<collisionBoxes.length; i++ ) {
+
+			if(i==0) {
+				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width, height/10);
+				
+			}
+			
+			if(i==1) {
+				collisionBoxes[i] = new Rectangle(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
+			}
+			
+			if(i==2) {
+				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
+			}
+			
+			if(i==3) {
+				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width/10, height);
+			}
+		}
+		
 		
 
 		walk();
@@ -54,7 +81,7 @@ public class Player extends GameObject {
 	}
 
 	void draw(Graphics g) {
-		System.out.println(isFalling);
+		System.out.println();
 
 		//		g.setColor(Color.BLUE);
 		//		g.fillRect(x, y, width, height);
@@ -70,27 +97,27 @@ public class Player extends GameObject {
 			walkCurrent += 1;
 			walkCurrent %= 36;
 
+		} else if (isJumping == true && isLeft == false) {
+			g.drawImage(jumpImage, x, y, width, height, null);
+			//			currentImage += 1;
+			//			currentImage %= 36;
+
+		} else if (isJumping == true && isLeft) {
+			g.drawImage(jumpImage, x, y, -width, height, null);
+			//			currentImage += 1;
+			//			currentImage %= 36;
+			
+//		if(isJumping == true && isWalking == true && isLeft) {
+//			g.drawImage(jumpImages[0], x, y, -width, height, null);
+//		}
+		
 		} else if (isFalling == true && isLeft == false) {
 			g.drawImage(fall, x, y, width, height, null);
 
 		} else if (isFalling == true && isLeft) {
 			g.drawImage(fall, x, y, -width, height, null);
 
-		} else if (isJumping == true && isLeft == false) {
-			g.drawImage(jumpImages[0], x, y, width, height, null);
-			//			currentImage += 1;
-			//			currentImage %= 36;
-
-		} else if (isJumping == true && isLeft) {
-			g.drawImage(jumpImages[0], x, y, -width, height, null);
-			//			currentImage += 1;
-			//			currentImage %= 36;
-			
-		if(isJumping == true && isWalking == true && isLeft) {
-			g.drawImage(jumpImages[0], x, y, -width, height, null);
-		}
-		
-		}
+		} 
 		
 		else {
 
@@ -145,22 +172,29 @@ public class Player extends GameObject {
 		if(onSurface) {
 			yspeed = 0;
 			isFalling = false;
-			isJumping = false;
 			isIdle = true;
 			
 			
 		}
 		else {
 			yspeed+=1;
-			isIdle = false;
-			isFalling = true;
+			
+			if(yspeed<0) {
+				isJumping = true;
+				isFalling = false;
+				isIdle = false;
+			}
+		    
+		    else if(yspeed>0) {
+				isFalling = true;
+				isJumping = false;
+				isIdle = false;
+				
+			}
+			
 		}
 		y+=yspeed;
-
-		if(yspeed>0) {
-			isIdle = false;
-			isFalling = true;
-		}
+		
 		
 		
 		if(y>=523) {
@@ -193,9 +227,11 @@ public class Player extends GameObject {
 	}
 
 	void update() {
+		super.update();
 		//		if (direction == 0 && isJumping == true) {
 		//			up();} 
 		if (direction == 1 && isWalking == true) {
+			
 			left();
 		}
 		//		if (direction == 2 && isWalking == true) {
@@ -205,7 +241,7 @@ public class Player extends GameObject {
 			right();
 		}
 
-		if (isJumping == true) {
+		if (isJumping == true || isFalling == true) {
 			jumping();
 		}
 
@@ -237,7 +273,7 @@ public class Player extends GameObject {
 	void jump() {
 
 		try {
-			jumpImages [0] = ImageIO.read(new File ("src/Pixel Adventure 1/Main Characters/Ninja Frog/Jump (32x32).png"));
+			jumpImage = ImageIO.read(new File ("src/Pixel Adventure 1/Main Characters/Ninja Frog/Jump (32x32).png"));
 		}
 
 		catch (Exception e) {
