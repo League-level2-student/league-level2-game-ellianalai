@@ -18,6 +18,7 @@ public class Terrain extends GameObject{
 	
 	void draw(Graphics g) {
 		g.drawImage(grass, x, y, width, height, null);
+		g.drawRect(x, y, width, height);
 	}
 	
 	void blocks() {

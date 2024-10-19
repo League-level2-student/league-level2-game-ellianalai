@@ -78,14 +78,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}
 
 		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
-			player.direction = 1;
 			player.isLeft = true;
 			player.isWalking = true;
 			player.isIdle = false;
 		}
 
 		else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-			player.direction = 2;
 			player.isLeft = false;
 			player.isWalking = true;
 			player.isIdle = false;

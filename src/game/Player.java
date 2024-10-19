@@ -14,14 +14,17 @@ public class Player extends GameObject {
 
 	int move;
 	boolean isWalking;
-	BufferedImage[] walkImages;
+	BufferedImage[] walkRight;
+	BufferedImage[] walkLeft;
 	BufferedImage[] idleImages;
 	Rectangle [] collisionBoxes;
-	int walkCurrent;
+	int walkCurrent_l;
+	int walkCurrent_r;
 	int idleCurrent;
 	int direction;
-	boolean keepDirection;
-	int walkNum = 1;
+	//	boolean keepDirection;
+	int walkNum_l = 1;
+	int walkNum_r = 1;
 	int idleNum = 1;
 	boolean isJumping;
 	boolean isFalling;
@@ -32,8 +35,8 @@ public class Player extends GameObject {
 	boolean onSurface = false;
 	boolean isLeft;
 	boolean isIdle;
-	
-	
+
+
 
 	public Player(int x, int y, int width, int height) {
 		super(x, y, width, height);
@@ -42,37 +45,42 @@ public class Player extends GameObject {
 		isJumping = false;
 		isFalling = false;
 		isIdle = true;
-		walkCurrent = 0;
+		walkCurrent_l = 0;
+		walkCurrent_r = 0;
 		idleCurrent = 0;
 		direction = 0;
-		walkImages = new BufferedImage[36];
+		walkRight = new BufferedImage[36];
+		walkLeft = new BufferedImage[36];
 		idleImages = new BufferedImage[55];
-		
+
+
 		collisionBoxes = new Rectangle[4];
-		
+
 		for(int i = 0; i<collisionBoxes.length; i++ ) {
 
 			if(i==0) {
 				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width, height/10);
-				
+
 			}
-			
+
 			if(i==1) {
 				collisionBoxes[i] = new Rectangle(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
 			}
-			
+
 			if(i==2) {
 				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
 			}
-			
+
 			if(i==3) {
 				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width/10, height);
 			}
 		}
-		
-		
 
-		walk();
+
+
+		
+		walk_r();
+		walk_l();
 		jump();
 		fall();
 		idle();
@@ -82,20 +90,21 @@ public class Player extends GameObject {
 
 	void draw(Graphics g) {
 		System.out.println();
+		g.drawRect(x, y, width, height);
 
 		//		g.setColor(Color.BLUE);
 		//		g.fillRect(x, y, width, height);
 
-		if (isWalking == true && direction == 1) {
-			g.drawImage(walkImages[walkCurrent], x, y, -width, height, null);
-			walkCurrent += 1;
-			walkCurrent %= 36;
-			keepDirection = true;
+		if (isWalking == true &&  isLeft == true) {
+			g.drawImage(walkLeft[walkCurrent_l], x, y, width, height, null);
+			walkCurrent_l += 1;
+			walkCurrent_l %= 36;
+			//			keepDirection = true;
 
-		} else if (isWalking == true && direction == 2) {
-			g.drawImage(walkImages[walkCurrent], x, y, width, height, null);
-			walkCurrent += 1;
-			walkCurrent %= 36;
+		} else if (isWalking == true && isLeft == false) {
+			g.drawImage(walkRight[walkCurrent_r], x, y, width, height, null);
+			walkCurrent_r += 1;
+			walkCurrent_r %= 36;
 
 		} else if (isJumping == true && isLeft == false) {
 			g.drawImage(jumpImage, x, y, width, height, null);
@@ -106,11 +115,11 @@ public class Player extends GameObject {
 			g.drawImage(jumpImage, x, y, -width, height, null);
 			//			currentImage += 1;
 			//			currentImage %= 36;
-			
-//		if(isJumping == true && isWalking == true && isLeft) {
-//			g.drawImage(jumpImages[0], x, y, -width, height, null);
-//		}
-		
+
+			//		if(isJumping == true && isWalking == true && isLeft) {
+			//			g.drawImage(jumpImages[0], x, y, -width, height, null);
+			//		}
+
 		} else if (isFalling == true && isLeft == false) {
 			g.drawImage(fall, x, y, width, height, null);
 
@@ -118,14 +127,14 @@ public class Player extends GameObject {
 			g.drawImage(fall, x, y, -width, height, null);
 
 		} 
-		
+
 		else {
 
 			if(isLeft && isIdle) {
 				g.drawImage(idleImages[idleCurrent], x, y, -width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
-				keepDirection = true;
+				//				keepDirection = true;
 			}
 
 			else if (isIdle && isLeft == false){
@@ -173,30 +182,30 @@ public class Player extends GameObject {
 			yspeed = 0;
 			isFalling = false;
 			isIdle = true;
-			
-			
+
+
 		}
 		else {
 			yspeed+=1;
-			
+
 			if(yspeed<0) {
 				isJumping = true;
 				isFalling = false;
 				isIdle = false;
 			}
-		    
-		    else if(yspeed>0) {
+
+			else if(yspeed>0) {
 				isFalling = true;
 				isJumping = false;
 				isIdle = false;
-				
+
 			}
-			
+
 		}
 		y+=yspeed;
-		
-		
-		
+
+
+
 		if(y>=523) {
 			yspeed = 0;
 			y = 523;
@@ -230,14 +239,14 @@ public class Player extends GameObject {
 		super.update();
 		//		if (direction == 0 && isJumping == true) {
 		//			up();} 
-		if (direction == 1 && isWalking == true) {
-			
+		if (isLeft == true && isWalking == true) {
+
 			left();
 		}
 		//		if (direction == 2 && isWalking == true) {
 		//			down();
 		//		}
-		else if (direction == 2 && isWalking == true) {
+		else if (isLeft == false && isWalking == true) {
 			right();
 		}
 
@@ -249,26 +258,51 @@ public class Player extends GameObject {
 
 
 
-	void walk() {
+	void walk_r() {
 
-		for (int i = 1; i < 37; i++) {
+			for (int i = 1; i < 37; i++) {
 
-			try {
-				walkImages[i - 1] = ImageIO.read(new File(
-						"src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Frog (" + walkNum + ").png"));
+				try {
+					walkRight[i - 1] = ImageIO.read(new File(
+							"src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Right/Frog (" + walkNum_r + ").png"));
 
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				System.out
-				.println("src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Frog (" + walkNum + ").png");
-				e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out
+					.println("src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Right/Frog (" + walkNum_r + ").png");
+					e.printStackTrace();
+				}
+
+				if (i % 3 == 0) {
+					walkNum_r += 1;
+				}
 			}
+		
+	}
 
-			if (i % 3 == 0) {
-				walkNum += 1;
-			}
+	void walk_l () {
+
+
+			for (int k = 1; k < 37; k++) {
+
+				try {
+					walkLeft[k - 1] = ImageIO.read(new File(
+							"src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Left/Frog_left (" + walkNum_l + ").png"));
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out
+					.println("src/Pixel Adventure 1/Main Characters/Ninja Frog/Run/Left/Frog_left (\" + walkNum + \").png");
+					e.printStackTrace();
+				}
+
+				if (k % 3 == 0) {
+					walkNum_l += 1;
+				}
 		}
 	}
+
+
 
 	void jump() {
 
@@ -298,11 +332,11 @@ public class Player extends GameObject {
 
 			try {
 				idleImages[i - 1] = ImageIO.read(new File(
-						"src/Pixel Adventure 1/Main Characters/Ninja Frog/Idle/Idle (" + idleNum + ").png"));
+						"src/Pixel Adventure 1/Main Characters/Ninja Frog/Idle/Idle/Right (" + idleNum + ").png"));
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				System.out.println("src/Pixel Adventure 1/Main Characters/Ninja Frog/Idle/Idle (" + idleNum + ").png");
+				System.out.println("src/Pixel Adventure 1/Main Characters/Ninja Frog/Idle/Idle/Right (" + idleNum + ").png");
 				e.printStackTrace();
 			}
 
