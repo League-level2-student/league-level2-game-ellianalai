@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
-	Player player;
+	static Player player;
 	Timer timer;
 	Image blue;
 	Terrain terrain;
@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		player = new Player(200,200,50,50);
 		timer = new Timer(1000/60, this);
 		timer.start();
-		terrain = new Terrain(100,100,100,68);
+		terrain = new Terrain(100,100,80,50);
 		background();
 		
 
