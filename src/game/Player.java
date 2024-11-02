@@ -213,7 +213,6 @@ public class Player extends GameObject {
 		if (x <= 50) {
 			x = 50;
 		}
-		super.update();
 	}
 
 	public void right() {
@@ -221,7 +220,6 @@ public class Player extends GameObject {
 		if (x >= 910) {
 			x = 910;
 		}
-		super.update();
 	}
 
 	void update() {

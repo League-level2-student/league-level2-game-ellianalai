@@ -29,10 +29,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		timer.start();
 		terrain = new Terrain(100,100,80,50);
 		background();
-		
+
 
 	}	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		checkCollision();
@@ -43,19 +43,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		
+
 		for(int i = 0; i<135; i++) {
 			x = (i*64)%960;
 			y = ((int)(i*64)/960) * 64;
 			g.drawImage(blue, x, y, 64, 64, null);
 		}
-		
+
 		terrain.draw(g);
 		player.draw(g);
-		
-		
-		
-		
+
+
+
+
 
 	}
 	@Override
@@ -88,7 +88,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			player.isWalking = true;
 			player.isIdle = false;
 		}
-	
+
 
 	}
 	@Override
@@ -111,7 +111,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	}
 
-	
+
 	void background() {
 		try {
 			blue = ImageIO.read(new File ("src/Pixel Adventure 1/Background/Blue.png"));
@@ -121,60 +121,60 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 		}
 	}
-	
+
 	void checkCollision() {
-		
-		if(player.collisionBox.intersects(terrain.collisionBox)) {
-			
-			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
-				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
-				player.yspeed = 0;
-				player.isFalling = true;
-				
-			} 
-			
-			else {
-				
-			}
-			
-			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
-				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
-				player.yspeed = 0;
-				player.isFalling = true;
-				
-			} 
-			
-			else {
-				
-			}
-			
-			if(player.collisionBoxes[2].intersects(terrain.collisionBox)) {
-				player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
-				player.onSurface = true;
-				
-			} 
-			
-			else {
-				
-			}
-			
-			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
-				System.out.println("Collision");
-				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
-				player.yspeed = 0;
-				player.isFalling = true;
-			} 
-			
-			else {
-				
-			}
-			
-			
-		}
-		
-		else {
-			player.onSurface = false;
-		}
+
+//		if(player.collisionBox.intersects(terrain.collisionBox)) {
+//
+//			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
+//				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
+//				player.yspeed = 0;
+//				player.isFalling = true;
+//
+//			} 
+//
+//			else {
+//
+//			}
+//
+//			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
+//				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
+//				player.yspeed = 0;
+//				player.isFalling = true;
+//
+//			} 
+//
+//			else {
+//
+//			}
+//
+//			if(player.collisionBoxes[2].intersects(terrain.collisionBox)) {
+//				player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
+//				player.onSurface = true;
+//
+//			} 
+//
+//			else {
+//
+//			}
+//
+//			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
+//				System.out.println("Collision");
+//				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
+//				player.yspeed = 0;
+//				player.isFalling = true;
+//			} 
+//
+//			else {
+//
+//			}
+//
+//
+//		}
+//
+//		else {
+//			player.onSurface = false;
+//		}
 	}
 
 
