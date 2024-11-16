@@ -38,9 +38,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		
+		
 		checkCollision();
 		player.update();
-		repaint();		
+		repaint();
+		
+		
+				
 	}
 
 
@@ -53,10 +58,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			g.drawImage(blue, x, y, 64, 64, null);
 	
 		}
-
-		platform.draw(g);
-		ground.draw(g);
+		
 		player.draw(g);
+		ground.draw(g);
+		platform.draw(g);
+		
+		
+		
 
 
 
@@ -128,20 +136,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
-		
-		if((player.collisionBoxes[2].intersects(ground.collisionBox)) || (player.collisionBoxes[2].intersects(platform.collisionBox))) {
-			System.out.println('h');
-			player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
-			player.onSurface = true;
-
-		} 
-		
-		else {
-
-		}
 
 		if((player.collisionBox.intersects(ground.collisionBox)) || (player.collisionBox.intersects(platform.collisionBox))) {
-			System.out.println("a");
+			
+			
+			if(player.collisionBoxes[2].intersects(ground.collisionBox)) {
+				System.out.println('h');
+				player.y = 459;
+				player.onSurface = true;
+
+			} 
+			
+			else {
+
+			}
 		}
 
 ////			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {

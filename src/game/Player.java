@@ -61,7 +61,7 @@ public class Player extends GameObject {
 			}
 
 			if(i==2) {
-				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
+				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
 			}
 
 			if(i==3) {
@@ -242,6 +242,26 @@ public class Player extends GameObject {
 
 		if (isJumping == true || isFalling == true) {
 			jumping();
+		}
+		
+		for(int i = 0; i<collisionBoxes.length; i++ ) {
+
+			if(i==0) {
+				collisionBoxes[0].setBounds(collisionBox.x, collisionBox.y, width, height/10);
+
+			}
+
+			if(i==1) {
+				collisionBoxes[1].setBounds(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
+			}
+
+			if(i==2) {
+				collisionBoxes[2].setBounds(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
+			}
+
+			if(i==3) {
+				collisionBoxes[3].setBounds(collisionBox.x, collisionBox.y, width/10, height);
+			}
 		}
 
 	}
