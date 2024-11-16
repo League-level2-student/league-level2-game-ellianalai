@@ -82,29 +82,32 @@ public class Player extends GameObject {
 
 	void draw(Graphics g) {
 		System.out.println();
-		g.drawRect(x, 300-height/2, width, height);
+		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);
+		g.drawRect(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
+		g.drawRect(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
+		g.drawRect(collisionBox.x, collisionBox.y, width/10, height);
 
 		//		g.setColor(Color.BLUE);
 		//		g.fillRect(x, y, width, height);
 
 		if (isWalking == true &&  isLeft == true) {
-			g.drawImage(walkImage[walkCurrent], x+width, 300-height/2, -width, height, null);
+			g.drawImage(walkImage[walkCurrent], x+width, y, -width, height, null);
 			walkCurrent += 1;
 			walkCurrent %= 36;
 			//			keepDirection = true;
 
 		} else if (isWalking == true && isLeft == false) {
-			g.drawImage(walkImage[walkCurrent], x, 300-height/2, width, height, null);
+			g.drawImage(walkImage[walkCurrent], x, y, width, height, null);
 			walkCurrent += 1;
 			walkCurrent %= 36;
 
 		} else if (isJumping == true && isLeft == false) {
-			g.drawImage(jumpImage, x, 300-height/2, width, height, null);
+			g.drawImage(jumpImage, x, y, width, height, null);
 			//			currentImage += 1;
 			//			currentImage %= 36;
 
 		} else if (isJumping == true && isLeft) {
-			g.drawImage(jumpImage, x+width, 300-height/2, -width, height, null);
+			g.drawImage(jumpImage, x+width, y, -width, height, null);
 			//			currentImage += 1;
 			//			currentImage %= 36;
 
@@ -113,24 +116,24 @@ public class Player extends GameObject {
 			//		}
 
 		} else if (isFalling == true && isLeft == false) {
-			g.drawImage(fall, x, 300-height/2, width, height, null);
+			g.drawImage(fall, x, y, width, height, null);
 
 		} else if (isFalling == true && isLeft) {
-			g.drawImage(fall, x+width, 300-height/2, -width, height, null);
+			g.drawImage(fall, x+width, y, -width, height, null);
 
 		} 
 
 		else {
 
 			if(isLeft && isIdle) {
-				g.drawImage(idleImages[idleCurrent], x+width, 300-height/2, -width, height, null);
+				g.drawImage(idleImages[idleCurrent], x+width, y, -width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
 				//				keepDirection = true;
 			}
 
 			else if (isIdle && isLeft == false){
-				g.drawImage(idleImages[idleCurrent], x, 300-height/2, width, height, null);
+				g.drawImage(idleImages[idleCurrent], x, y, width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
 			}
@@ -210,8 +213,8 @@ public class Player extends GameObject {
 
 	public void left() {
 		x -= move;
-		if (x <= 50) {
-			x = 50;
+		if (x <= 0) {
+			x = 0;
 		}
 	}
 

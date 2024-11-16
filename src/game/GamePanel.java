@@ -19,15 +19,18 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	static Player player;
 	Timer timer;
 	Image blue;
-	Terrain terrain;
 	int x;
 	int y;
+	Platform platform;
+	Ground ground;
 
 	GamePanel(){
 		player = new Player(200,200,50,50);
 		timer = new Timer(1000/60, this);
 		timer.start();
-		terrain = new Terrain(100,100,80,50);
+		platform = new Platform(100,100,80,50);
+		ground = new Ground(0, 508, 960, 64);
+		
 		background();
 
 
@@ -48,9 +51,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			x = (i*64)%960;
 			y = ((int)(i*64)/960) * 64;
 			g.drawImage(blue, x, y, 64, 64, null);
+	
 		}
 
-		terrain.draw(g);
+		platform.draw(g);
+		ground.draw(g);
 		player.draw(g);
 
 
@@ -123,51 +128,58 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
+		
+		if((player.collisionBoxes[2].intersects(ground.collisionBox)) || (player.collisionBoxes[2].intersects(platform.collisionBox))) {
+			System.out.println('h');
+			player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
+			player.onSurface = true;
 
-//		if(player.collisionBox.intersects(terrain.collisionBox)) {
+		} 
+		
+		else {
+
+		}
+
+		if((player.collisionBox.intersects(ground.collisionBox)) || (player.collisionBox.intersects(platform.collisionBox))) {
+			System.out.println("a");
+		}
+
+////			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
+////				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
+////				player.yspeed = 0;
+////				player.isFalling = true;
+////
+////			} 
+////
+////			else {
+////
+////			}
+////
+////			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
+////				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
+////				player.yspeed = 0;
+////				player.isFalling = true;
+////
+////			} 
+////
+////			else {
+////
+////			}
 //
-//			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
-//				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
-//				player.yspeed = 0;
-//				player.isFalling = true;
+//			
 //
-//			} 
+//			
 //
-//			else {
-//
-//			}
-//
-//			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
-//				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
-//				player.yspeed = 0;
-//				player.isFalling = true;
-//
-//			} 
-//
-//			else {
-//
-//			}
-//
-//			if(player.collisionBoxes[2].intersects(terrain.collisionBox)) {
-//				player.collisionBoxes[2].setBounds(player.x, player.y, player.width, player.height);
-//				player.onSurface = true;
-//
-//			} 
-//
-//			else {
-//
-//			}
-//
-//			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
-//				System.out.println("Collision");
-//				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
-//				player.yspeed = 0;
-//				player.isFalling = true;
-//			} 
-//
-//			else {
-//
-//			}
+////			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
+////				System.out.println("Collision");
+////				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
+////				player.yspeed = 0;
+////				player.isFalling = true;
+////			} 
+////
+////			else {
+////
+////			}
 //
 //
 //		}

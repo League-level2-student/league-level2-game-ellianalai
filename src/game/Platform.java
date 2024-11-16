@@ -11,16 +11,15 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-public class Terrain extends GameObject{
+public class Platform extends GameObject{
 
 	Image grass;
-	ArrayList<Terrain> terrain = new ArrayList <Terrain>();
-	Random ran = new Random();
 
-	public Terrain(int x, int y, int width, int height) {
+
+	public Platform(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		blocks();
-//		addBlocks();
+		platform();
+
 
 
 
@@ -28,9 +27,11 @@ public class Terrain extends GameObject{
 	}
 
 	void draw(Graphics g) {
-		System.out.println(terrain.size());
 		g.drawImage(grass, x, y , width, height, null);
-		g.drawRect(x, 300-height/2+(y-GamePanel.player.y), width, height);
+		g.drawRect(x, y, width, height);
+
+		
+		
 
 		
 //		for(Terrain t: terrain) {
@@ -40,7 +41,7 @@ public class Terrain extends GameObject{
 		
 
 	}
-	void blocks() {
+	void platform() {
 
 		try {
 			grass = ImageIO.read(new File("src/Pixel Adventure 1/Terrain/Grass.png"));
@@ -49,6 +50,7 @@ public class Terrain extends GameObject{
 		}
 
 	}
+
 	
 //	void addBlocks() {
 //		terrain.add(new Terrain(ran.nextInt(Game.WIDTH), 300-height/2+(y-GamePanel.player.y), 80, 50));
@@ -68,6 +70,8 @@ public class Terrain extends GameObject{
 	
 	
 	}
+	
+	
 
 }
 	
