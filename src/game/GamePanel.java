@@ -82,6 +82,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			player.isJumping = true;
 			player.yspeed = -17;
 			player.isIdle = false;
+			
 
 		}
 
@@ -136,19 +137,38 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
+			
+		
 
-		if((player.collisionBox.intersects(ground.collisionBox)) || (player.collisionBox.intersects(platform.collisionBox))) {
+		if((player.collisionBox.intersects(ground.collisionBox))) {
 			
+			if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == true) {
+				System.out.println("jump");
+				player.onSurface = false;
+				
+			}
 			
-			if(player.collisionBoxes[2].intersects(ground.collisionBox)) {
-				System.out.println('h');
-				player.y = 459;
+			else if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == false){
 				player.onSurface = true;
-
-			} 
+				player.y = 459;
+			}
+		
+		}
+		
+		if(player.collisionBox.intersects(platform.collisionBox)) {
 			
-			else {
-
+			
+			if(player.collisionBoxes[2].intersects(platform.collisionBox)&& player.isJumping == true) {
+				System.out.println("jump");
+				player.onSurface = false;
+				player.isFalling = true;
+				
+			}
+			
+			else if(player.collisionBoxes[2].intersects(platform.collisionBox)&& player.isJumping == false) {
+				player.onSurface = true;
+				player.y = 50;
+				
 			}
 		}
 

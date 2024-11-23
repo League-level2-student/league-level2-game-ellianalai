@@ -61,7 +61,7 @@ public class Player extends GameObject {
 			}
 
 			if(i==2) {
-				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
+				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
 			}
 
 			if(i==3) {
@@ -84,7 +84,7 @@ public class Player extends GameObject {
 		System.out.println();
 		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);
 		g.drawRect(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
-		g.drawRect(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
+		g.drawRect(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
 		g.drawRect(collisionBox.x, collisionBox.y, width/10, height);
 
 		//		g.setColor(Color.BLUE);
@@ -182,6 +182,7 @@ public class Player extends GameObject {
 		}
 		else {
 			yspeed+=1;
+			isFalling = true;
 
 			if(yspeed<0) {
 				isJumping = true;
@@ -198,7 +199,7 @@ public class Player extends GameObject {
 
 		}
 		y+=yspeed;
-
+		
 
 
 		if(y>=523) {
@@ -256,7 +257,7 @@ public class Player extends GameObject {
 			}
 
 			if(i==2) {
-				collisionBoxes[2].setBounds(collisionBox.x, collisionBox.y - height/10 + height+5, width, height/10);
+				collisionBoxes[2].setBounds(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
 			}
 
 			if(i==3) {

@@ -56,12 +56,12 @@ public class Platform extends GameObject{
 //		terrain.add(new Terrain(ran.nextInt(Game.WIDTH), 300-height/2+(y-GamePanel.player.y), 80, 50));
 //	}
 
-	@Override
+//	@Override
 	void update() {
+		super.update();
 		
 		
-		
-		collisionBox.setBounds(x, y, width, height/2);
+//		collisionBox.setBounds(x, y, width, height/2);
 //		for(Terrain t: terrain) {
 ////			t.update();
 ////			System.out.println("h");
