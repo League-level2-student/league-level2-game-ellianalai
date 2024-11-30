@@ -48,7 +48,6 @@ public class Player extends GameObject {
 		walkImage = new BufferedImage[36];
 		idleImages = new BufferedImage[55];
 		collisionBoxes = new Rectangle[4];
-System.out.println();
 
 
 
