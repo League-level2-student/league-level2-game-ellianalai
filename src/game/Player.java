@@ -49,18 +49,6 @@ public class Player extends GameObject {
 		idleImages = new BufferedImage[55];
 		collisionBoxes = new Rectangle[4];
 
-
-
-		
-		walk();
-		jump();
-		fall();
-		idle();
-
-
-	}
-
-	void draw(Graphics g) {
 		
 		for(int i = 0; i<collisionBoxes.length; i++ ) {
 
@@ -81,6 +69,19 @@ public class Player extends GameObject {
 				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width/10, height);
 			}
 		}
+
+		
+		walk();
+		jump();
+		fall();
+		idle();
+
+
+	}
+
+	void draw(Graphics g) {
+		
+		
 		
 		System.out.println();
 		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);

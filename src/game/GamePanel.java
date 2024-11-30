@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Platform p2;
 	Ground ground;
 	ArrayList<Platform> platforms = new ArrayList <Platform>();
+	ArrayList<Items> item = new ArrayList<Items>();
 
 	GamePanel(){
 		player = new Player(200,200,50,50);
@@ -43,10 +44,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		checkCollision();
 		player.update();
+		checkCollision();
+		
+		
+		
 		
 		repaint();
+		
+		
 				
 	}
 
@@ -136,20 +142,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
-
+		System.out.println(player.onSurface);
 
 		if((player.collisionBox.intersects(ground.collisionBox))) {
 			
-			if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == true) {
-				System.out.println("jump");
-				player.onSurface = false;
-				
+			if(player.collisionBoxes[2].intersects(ground.collisionBox)) {
+				player.y = 459;
+				player.isFalling = false;
+				player.isIdle = true;
 			}
 			
 			else {
-				player.onSurface = true;
-				player.y = 459;
+		
 			}
+			
+//			if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == true) {
+//				System.out.println("jump");
+//				player.onSurface = false;
+//				
+//			}
+//			
+//			else {
+//				player.onSurface = true;
+//				player.y = 459;
+//			}
 		
 		}
 		

@@ -26,5 +26,6 @@ public class GameObject {
 
 		collisionBox.setBounds(x, y, width, height);
 	}
+	
 
 }
