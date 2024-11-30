@@ -42,7 +42,7 @@ public class Platform extends GameObject{
 
 	}
 	void platform() {
-
+System.out.println();
 		try {
 			grass = ImageIO.read(new File("src/Pixel Adventure 1/Terrain/Grass.png"));
 		} catch (IOException e) {

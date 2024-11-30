@@ -136,6 +136,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
+		System.out.println();
 
 		if((player.collisionBox.intersects(ground.collisionBox))) {
 			
