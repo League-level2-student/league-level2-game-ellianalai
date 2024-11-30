@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -22,29 +23,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	int x;
 	int y;
 	Platform platform;
+	Platform p2;
 	Ground ground;
+	ArrayList<Platform> platforms = new ArrayList <Platform>();
 
 	GamePanel(){
 		player = new Player(200,200,50,50);
 		timer = new Timer(1000/60, this);
 		timer.start();
 		platform = new Platform(100,100,80,50);
+		p2 = new Platform(300, 400, 80, 50);
 		ground = new Ground(0, 508, 960, 64);
 		
 		background();
-
+		addPlatform();
 
 	}	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
-		
 		checkCollision();
 		player.update();
+		
 		repaint();
-		
-		
 				
 	}
 
@@ -61,14 +63,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 		player.draw(g);
 		ground.draw(g);
-		platform.draw(g);
 		
+		for(Platform p: platforms) {
+			p.draw(g);
+		}
 		
-		
-
-
-
-
 
 	}
 	@Override
@@ -137,8 +136,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
-			
-		
 
 		if((player.collisionBox.intersects(ground.collisionBox))) {
 			
@@ -148,73 +145,58 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				
 			}
 			
-			else if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == false){
+			else {
 				player.onSurface = true;
 				player.y = 459;
 			}
 		
 		}
 		
-		if(player.collisionBox.intersects(platform.collisionBox)) {
+		else {
+			player.onSurface = false;
+		}
+		
+		for(int i = 0; i<platforms.size(); i++) {
+			Platform p = platforms.get(i);
 			
-			
-			if(player.collisionBoxes[2].intersects(platform.collisionBox)&& player.isJumping == true) {
-				System.out.println("jump");
-				player.onSurface = false;
-				player.isFalling = true;
+			if(player.collisionBox.intersects(p.collisionBox)) {
+				
+				
+				if(player.collisionBox.intersects(p.collisionBox)&& player.isJumping == true) {
+					System.out.println("jump");
+					player.onSurface = false;
+					
+				}
+				
+				else if(player.collisionBox.intersects(platform.collisionBox)&& player.isJumping == false) {
+					player.onSurface = true;
+					player.y = 51;
+					
+					
+				}
+				
+				else if(player.collisionBox.intersects(p2.collisionBox)&& player.isJumping == false) {
+					player.onSurface = true;
+					player.y = 351;
+					
+					
+				}
 				
 			}
 			
-			else if(player.collisionBoxes[2].intersects(platform.collisionBox)&& player.isJumping == false) {
-				player.onSurface = true;
-				player.y = 50;
-				
+			else {
+				player.isFalling = true;
+//				player.onSurface= false;
 			}
 		}
+		
 
-////			if(player.collisionBoxes[0].intersects(terrain.collisionBox)) {
-////				player.collisionBoxes[0].setBounds(player.x, player.y, player.width, player.height);
-////				player.yspeed = 0;
-////				player.isFalling = true;
-////
-////			} 
-////
-////			else {
-////
-////			}
-////
-////			if(player.collisionBoxes[1].intersects(terrain.collisionBox)) {
-////				player.collisionBoxes[1].setBounds(player.x, player.y, player.width, player.height);
-////				player.yspeed = 0;
-////				player.isFalling = true;
-////
-////			} 
-////
-////			else {
-////
-////			}
-//
-//			
-//
-//			
-//
-////			if(player.collisionBoxes[3].intersects(terrain.collisionBox)) {
-////				System.out.println("Collision");
-////				player.collisionBoxes[3].setBounds(player.x, player.y, player.width, player.height);
-////				player.yspeed = 0;
-////				player.isFalling = true;
-////			} 
-////
-////			else {
-////
-////			}
-//
-//
-//		}
-//
-//		else {
-//			player.onSurface = false;
-//		}
+	}
+	
+	void addPlatform() {
+		platforms.add(p2);
+		platforms.add(platform);
+		
 	}
 
 

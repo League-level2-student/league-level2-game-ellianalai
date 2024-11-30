@@ -40,7 +40,7 @@ public class Player extends GameObject {
 		move = 5;
 		isWalking = false;
 		isJumping = false;
-		isFalling = false;
+		isFalling = true;
 		isIdle = true;
 		walkCurrent = 0;
 		idleCurrent = 0;
@@ -49,6 +49,20 @@ public class Player extends GameObject {
 		idleImages = new BufferedImage[55];
 		collisionBoxes = new Rectangle[4];
 
+
+
+
+		
+		walk();
+		jump();
+		fall();
+		idle();
+
+
+	}
+
+	void draw(Graphics g) {
+		
 		for(int i = 0; i<collisionBoxes.length; i++ ) {
 
 			if(i==0) {
@@ -68,46 +82,35 @@ public class Player extends GameObject {
 				collisionBoxes[i] = new Rectangle(collisionBox.x, collisionBox.y, width/10, height);
 			}
 		}
-
-
-
 		
-		walk();
-		jump();
-		fall();
-		idle();
-
-
-	}
-
-	void draw(Graphics g) {
 		System.out.println();
 		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);
 		g.drawRect(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
 		g.drawRect(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
 		g.drawRect(collisionBox.x, collisionBox.y, width/10, height);
+		g.drawRect(x, y, width, height);
 
 		//		g.setColor(Color.BLUE);
 		//		g.fillRect(x, y, width, height);
 
 		if (isWalking == true &&  isLeft == true) {
-			g.drawImage(walkImage[walkCurrent], x+width, y, -width, height, null);
+			g.drawImage(walkImage[walkCurrent], collisionBox.x+width, collisionBox.y, -width, height, null);
 			walkCurrent += 1;
 			walkCurrent %= 36;
 			//			keepDirection = true;
 
 		} else if (isWalking == true && isLeft == false) {
-			g.drawImage(walkImage[walkCurrent], x, y, width, height, null);
+			g.drawImage(walkImage[walkCurrent], collisionBox.x, collisionBox.y, width, height, null);
 			walkCurrent += 1;
 			walkCurrent %= 36;
 
 		} else if (isJumping == true && isLeft == false) {
-			g.drawImage(jumpImage, x, y, width, height, null);
+			g.drawImage(jumpImage, collisionBox.x, collisionBox.y, width, height, null);
 			//			currentImage += 1;
 			//			currentImage %= 36;
 
 		} else if (isJumping == true && isLeft) {
-			g.drawImage(jumpImage, x+width, y, -width, height, null);
+			g.drawImage(jumpImage, collisionBox.x+width, collisionBox.y, -width, height, null);
 			//			currentImage += 1;
 			//			currentImage %= 36;
 
@@ -116,24 +119,24 @@ public class Player extends GameObject {
 			//		}
 
 		} else if (isFalling == true && isLeft == false) {
-			g.drawImage(fall, x, y, width, height, null);
+			g.drawImage(fall, collisionBox.x, collisionBox.y, width, height, null);
 
 		} else if (isFalling == true && isLeft) {
-			g.drawImage(fall, x+width, y, -width, height, null);
+			g.drawImage(fall, collisionBox.x+width, collisionBox.y, -width, height, null);
 
 		} 
 
 		else {
 
 			if(isLeft && isIdle) {
-				g.drawImage(idleImages[idleCurrent], x+width, y, -width, height, null);
+				g.drawImage(idleImages[idleCurrent], collisionBox.x+width, collisionBox.y, -width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
 				//				keepDirection = true;
 			}
 
 			else if (isIdle && isLeft == false){
-				g.drawImage(idleImages[idleCurrent], x, y, width, height, null);
+				g.drawImage(idleImages[idleCurrent], collisionBox.x, collisionBox.y, width, height, null);
 				idleCurrent += 1;
 				idleCurrent %= 55;
 			}
