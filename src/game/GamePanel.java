@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 		background();
 		addPlatform();
-
+		System.out.println();
 	}	
 	
 	ActionListener i = new ActionListener() {
