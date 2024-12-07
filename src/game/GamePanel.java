@@ -29,36 +29,37 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Ground ground;
 	Random ran = new Random();
 	ArrayList<Platform> platforms = new ArrayList <Platform>();
-	ArrayList<Items> item = new ArrayList<Items>();
+	ArrayList<Bomb> bombs = new ArrayList <Bomb>();
+	ArrayList<Fruit> fruits = new ArrayList <Fruit>();
+//	ArrayList<Items> item = new ArrayList<Items>();
 	
 
 	GamePanel(){
 		player = new Player(200,200,50,50);
-		timer = new Timer(1000/60, i);
+		timer = new Timer(1000/60, this);
 		timer.start();
 		platform = new Platform(100,100,80,50);
 		p2 = new Platform(300, 400, 80, 50);
 		ground = new Ground(0, 508, 960, 64);
-		
+		spawnItem();
 		background();
 		addPlatform();
 		System.out.println();
 	}	
 	
-	ActionListener i = new ActionListener() {
 		
 		public void actionPerformed(ActionEvent arg0) {
 			
 			player.update();
 			checkCollision();
-			addItem();
+			addBomb();
+			addFruit();
+//			addItem();
 			repaint();
 			
 			
 					
 		}
-	};
-	
 
 
 	@Override
@@ -78,9 +79,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			p.draw(g);
 		}
 		
-		for(Items i: item) {
-			i.draw(g);
+		for(Bomb b: bombs) {
+			b.draw(g);
 		}
+		
+		for(Fruit f: fruits) {
+			f.draw(g);
+		}
+		
+		
+		
+//		for(Items i: item) {
+//			i.draw(g);
+//		}
 		
 
 	}
@@ -220,19 +231,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 	}
 	
-	void addItem() {
-		item.add(new Items(ran.nextInt(Game.WIDTH), 0, 32, 32));	
+	void addBomb() {
+		bombs.add(new Bomb(ran.nextInt(Game.WIDTH), 0, 32, 32));
 	}
 	
+	void addFruit() {
+		fruits.add(new Fruit(ran.nextInt(Game.WIDTH), 0, 32, 32));
+	}
+	
+//	void addItem() {
+//		item.add(new Items(ran.nextInt(Game.WIDTH), 0, 32, 32));	
+//	}
+	
 	void spawnItem() {
-		item_spawn = new Timer(1000, i);
+		item_spawn = new Timer(1000, null);
 		item_spawn.start();
 	}
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+
+
+	
+
 
 
 }
