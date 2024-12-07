@@ -204,15 +204,6 @@ public class Player extends GameObject {
 		y+=yspeed;
 		
 
-
-		if(y>=523) {
-			yspeed = 0;
-			y = 523;
-			isJumping = false;
-			isFalling = false;
-			isIdle = true;
-		}
-
 	}
 
 	public void left() {

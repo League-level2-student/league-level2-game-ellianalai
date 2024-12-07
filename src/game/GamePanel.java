@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -19,18 +20,21 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	static Player player;
 	Timer timer;
+	Timer item_spawn;
 	Image blue;
 	int x;
 	int y;
 	Platform platform;
 	Platform p2;
 	Ground ground;
+	Random ran = new Random();
 	ArrayList<Platform> platforms = new ArrayList <Platform>();
 	ArrayList<Items> item = new ArrayList<Items>();
+	
 
 	GamePanel(){
 		player = new Player(200,200,50,50);
-		timer = new Timer(1000/60, this);
+		timer = new Timer(1000/60, i);
 		timer.start();
 		platform = new Platform(100,100,80,50);
 		p2 = new Platform(300, 400, 80, 50);
@@ -40,21 +44,21 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		addPlatform();
 
 	}	
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	
+	ActionListener i = new ActionListener() {
 		
-		player.update();
-		checkCollision();
-		
-		
-		
-		
-		repaint();
-		
-		
-				
-	}
+		public void actionPerformed(ActionEvent arg0) {
+			
+			player.update();
+			checkCollision();
+			addItem();
+			repaint();
+			
+			
+					
+		}
+	};
+	
 
 
 	@Override
@@ -74,6 +78,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			p.draw(g);
 		}
 		
+		for(Items i: item) {
+			i.draw(g);
+		}
+		
 
 	}
 	@Override
@@ -91,10 +99,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 		}
 
-		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
-			player.isFalling = true;
-			player.isIdle = false;
-		}
+//		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+//			player.isFalling = true;
+//			player.isIdle = false;
+//		}
 
 		else if(e.getKeyCode()==KeyEvent.VK_LEFT) {
 			player.isLeft = true;
@@ -142,36 +150,22 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void checkCollision() {
-		System.out.println(player.onSurface);
-
+		
 		if((player.collisionBox.intersects(ground.collisionBox))) {
 			
-			if(player.collisionBoxes[2].intersects(ground.collisionBox)) {
-				player.y = 459;
-				player.isFalling = false;
-				player.isIdle = true;
+			if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == true) {
+				player.jumping();
 			}
 			
 			else {
-		
+				player.y = 459;
+				player.isFalling = false;
+				player.isIdle = true;
+				player.yspeed = 0;
 			}
-			
-//			if(player.collisionBoxes[2].intersects(ground.collisionBox)&& player.isJumping == true) {
-//				System.out.println("jump");
-//				player.onSurface = false;
-//				
-//			}
-//			
-//			else {
-//				player.onSurface = true;
-//				player.y = 459;
-//			}
 		
 		}
 		
-		else {
-			player.onSurface = false;
-		}
 		
 		for(int i = 0; i<platforms.size(); i++) {
 			Platform p = platforms.get(i);
@@ -181,29 +175,39 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				
 				if(player.collisionBox.intersects(p.collisionBox)&& player.isJumping == true) {
 					System.out.println("jump");
-					player.onSurface = false;
+					player.jumping();
 					
 				}
 				
 				else if(player.collisionBox.intersects(platform.collisionBox)&& player.isJumping == false) {
-					player.onSurface = true;
 					player.y = 51;
+					player.isFalling = false;
+					player.isIdle = true;
+					player.yspeed = 0;
 					
 					
 				}
 				
 				else if(player.collisionBox.intersects(p2.collisionBox)&& player.isJumping == false) {
-					player.onSurface = true;
 					player.y = 351;
-					
+					player.isFalling = false;
+					player.isIdle = true;
+					player.yspeed = 0;
 					
 				}
+				
 				
 			}
 			
 			else {
-				player.isFalling = true;
-//				player.onSurface= false;
+				if(player.collisionBox.intersects(platform.collisionBox)|| player.collisionBox.intersects(ground.collisionBox)
+					|| player.collisionBox.intersects(p2.collisionBox)) {
+					player.isIdle = true;
+					player.isFalling = false;
+				}
+				else {
+					player.isFalling = true;
+				}
 			}
 		}
 		
@@ -213,6 +217,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void addPlatform() {
 		platforms.add(p2);
 		platforms.add(platform);
+		
+	}
+	
+	void addItem() {
+		item.add(new Items(ran.nextInt(Game.WIDTH), 0, 32, 32));	
+	}
+	
+	void spawnItem() {
+		item_spawn = new Timer(1000, i);
+		item_spawn.start();
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
