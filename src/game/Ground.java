@@ -30,7 +30,6 @@ public class Ground extends GameObject{
 	void draw(Graphics g) {
 
 		g.drawImage(block, x, y, width, height, null);
-		g.drawRect(x, y, width, height);
 
 	}
 
