@@ -49,7 +49,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	ActionListener a = new ActionListener() {
 		
 		public void actionPerformed(ActionEvent e) {
-			addBomb();
+//			addBomb();
 			addFruit();
 			
 		}
@@ -73,12 +73,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	protected void paintComponent(Graphics g) {
 
-		for(int i = 0; i<135; i++) {
-			x = (i*64)%960;
-			y = ((int)(i*64)/960) * 64;
-			g.drawImage(blue, x, y, 64, 64, null);
-
-		}
+//		for(int i = 0; i<135; i++) {
+//			x = (i*64)%960;
+//			y = ((int)(i*64)/960) * 64;
+//			g.drawImage(blue, x, y, 64, 64, null);
+//
+//		}
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
 
 		player.draw(g);
 		ground.draw(g);
@@ -241,6 +243,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			else {
 				f.y+=2;
 			}
+			
+			if(f.collisionBox.intersects(player.collisionBox)) {
+				f.fruit_got = true;
+			}
+			else {
+				f.fruit_got = false;
+			}
 		}
 
 
@@ -257,7 +266,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void addFruit() {
-		fruits.add(new Fruit(ran.nextInt(Game.WIDTH), 0, 20, 24));
+		fruits.add(new Fruit(ran.nextInt(Game.WIDTH), 0, 20, 23));
 		
 	}
 
