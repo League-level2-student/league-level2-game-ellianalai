@@ -18,6 +18,7 @@ public class Bomb extends GameObject{
 	
 	void draw(Graphics g) {
 		g.drawImage(bomb, x, y, width, height, null);
+		g.drawRect(collisionBox.x, collisionBox.y, width, height);
 	}
 	
 	void update() {

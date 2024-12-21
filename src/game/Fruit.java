@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 public class Fruit extends GameObject{
 
 	Image fruit;
+	Image c;
 	Random ran = new Random();
 	int num;
 	int collectCurrent;
@@ -24,9 +25,12 @@ public class Fruit extends GameObject{
 
 	public Fruit (int x, int y, int width, int height){
 		super(x,y,width,height);
-		fruit();
-		collectedImage = new BufferedImage[25];
+		collectedImage = new BufferedImage[15];
 		collectCurrent = 0;
+		fruit();
+		collected();
+		
+		
 
 	}
 
@@ -36,8 +40,12 @@ public class Fruit extends GameObject{
 			g.drawImage(fruit, x, y, width, height, null);
 		}
 		else if(fruit_got == true) {
-			g.drawImage(collectedImage[collectCurrent], collisionBox.x, collisionBox.y, width, height, null);
+			g.drawImage(collectedImage[collectCurrent], x, y, width, height, null);
+			collectCurrent +=1;
+
 		}
+		
+
 		
 //		g.drawRect(collisionBox.x, collisionBox.y, collisionBox.width, collisionBox.height);
 	}
@@ -69,7 +77,7 @@ public class Fruit extends GameObject{
 	
 	void collected() {
 
-		for (int i = 1; i < 26; i++) {
+		for (int i = 1; i < 16; i++) {
 
 			try {
 				collectedImage[i - 1] = ImageIO.read(new File(
@@ -80,10 +88,13 @@ public class Fruit extends GameObject{
 				e.printStackTrace();
 			}
 
-			if (i % 5 == 0) {
+			if (i % 3 == 0) {
 				collectNum += 1;
 			}
 		}
+
+		
+		
 	
 }
 

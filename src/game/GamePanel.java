@@ -20,7 +20,8 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	static Player player;
 	Timer timer;
-	Timer item_spawn;
+	Timer fruit_spawn;
+	Timer bomb_spawn;
 	Image blue;
 	int x;
 	int y;
@@ -41,7 +42,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		ground = new Ground(0, 508, 960, 64);
 		timer = new Timer(1000/60, this);
 		timer.start();
-		spawnItem();
+		spawnFruit();
+		spawnBomb();
 		background();
 		addPlatform();
 	}	
@@ -49,8 +51,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	ActionListener a = new ActionListener() {
 		
 		public void actionPerformed(ActionEvent e) {
-//			addBomb();
-			addFruit();
+//			addFruit();
+			
+		}
+	};
+	
+	ActionListener b = new ActionListener() {
+		
+		public void actionPerformed(ActionEvent e) {
+			addBomb();
 			
 		}
 	};
@@ -64,7 +73,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		for(Fruit f: fruits) {
 			f.update();
 		}
+		
+		for(Bomb b: bombs) {
+			b.update();
+		}
 		checkCollision();
+//		purgeItem();
 		repaint();
 
 	}
@@ -73,14 +87,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	protected void paintComponent(Graphics g) {
 
-//		for(int i = 0; i<135; i++) {
-//			x = (i*64)%960;
-//			y = ((int)(i*64)/960) * 64;
-//			g.drawImage(blue, x, y, 64, 64, null);
-//
-//		}
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, Game.WIDTH, Game.HEIGHT);
+		for(int i = 0; i<135; i++) {
+			x = (i*64)%960;
+			y = ((int)(i*64)/960) * 64;
+			g.drawImage(blue, x, y, 64, 64, null);
+
+		}
 
 		player.draw(g);
 		ground.draw(g);
@@ -90,13 +102,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		}
 
 		for(Bomb b: bombs) {
-			b.y+=2;
 			b.draw(g);
 		}
 
 		for(Fruit f: fruits) {
 
 			f.draw(g);
+			
+			
 		}
 
 
@@ -246,10 +259,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			
 			if(f.collisionBox.intersects(player.collisionBox)) {
 				f.fruit_got = true;
+				if(f.collectCurrent>=15) {
+					purgeItem();
+				}
+
 			}
 			else {
 				f.fruit_got = false;
 			}
+		}
+		
+		for(int i = 0; i<bombs.size(); i++) {
+			Bomb b = bombs.get(i);
+			
+			if(b.collisionBox.intersects(ground.collisionBox)) {
+				b.y+=0;
+			}
+			else {
+				b.y+=2;
+			}
+			
+
 		}
 
 
@@ -274,9 +304,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	//		item.add(new Items(ran.nextInt(Game.WIDTH), 0, 32, 32));	
 	//	}
 
-	void spawnItem() {
-		item_spawn = new Timer(1000, a);
-		item_spawn.start();
+	void spawnFruit() {
+		fruit_spawn = new Timer(1000, a);
+		fruit_spawn.start();
+	}
+	
+	void spawnBomb() {
+		bomb_spawn = new Timer (2000, b);
+		bomb_spawn.start();
+	}
+	
+	
+	void purgeItem( ) {
+		for(int i = 0; i<fruits.size(); i++) {
+			Fruit f = fruits.get(i);
+			
+			if(f.fruit_got == true) {
+				fruits.remove(i);
+				i--;
+			}
+		}
 	}
 
 
