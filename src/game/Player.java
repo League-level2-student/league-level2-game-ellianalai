@@ -40,7 +40,7 @@ public class Player extends GameObject {
 		move = 5;
 		isWalking = false;
 		isJumping = false;
-		isFalling = true;
+		isFalling = false;
 		isIdle = true;
 		walkCurrent = 0;
 		idleCurrent = 0;
@@ -215,8 +215,8 @@ public class Player extends GameObject {
 
 	public void right() {
 		x += move;
-		if (x >= 910) {
-			x = 910;
+		if (x >= 462) {
+			x = 462;
 		}
 	}
 

@@ -22,30 +22,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Timer timer;
 	Timer fruit_spawn;
 	Timer bomb_spawn;
+	Timer platform_spawn;
 	Image blue;
 	int x;
 	int y;
 	Platform platform;
 	Platform p2;
 	Ground ground;
-	Fruit fr;
 	Random ran = new Random();
 	ArrayList<Platform> platforms = new ArrayList <Platform>();
 	ArrayList<Bomb> bombs = new ArrayList <Bomb>();
 	ArrayList<Fruit> fruits = new ArrayList <Fruit>();
+	int platformHeight = 705;
+	int currentState = 0;
 	
 
 	GamePanel(){
-		player = new Player(200,200,50,50);
-		platform = new Platform(100,100,80,50);
-		p2 = new Platform(300, 400, 80, 50);
-		ground = new Ground(0, 508, 960, 64);
+		player = new Player(200,400,50,50);
+//		platform = new Platform(100,100,80,50);
+//		p2 = new Platform(300, 400, 80, 50);
+		ground = new Ground(0, 705, 512, 64);
 		timer = new Timer(1000/60, this);
 		timer.start();
 		spawnFruit();
 		spawnBomb();
 		background();
-		addPlatform();
+
+		
+		
 	}	
 
 	ActionListener a = new ActionListener() {
@@ -59,16 +63,89 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	ActionListener b = new ActionListener() {
 		
 		public void actionPerformed(ActionEvent e) {
-			addBomb();
+//			addBomb();
 			
 		}
 	};
-		
+
 
 	public void actionPerformed(ActionEvent arg0) {
 		
+		if(currentState == 0) {
+			updateFirst();
+		}
+		
+		else if(currentState == 1) {
+			updateOther();
+		}
+		
+		checkCollision();
+		checkHeight();
+//		purgeItem();
+		repaint();
+
+	}
+
+	void checkHeight() {
+		if(player.y<=-50) {
+			currentState =1;
+			
+			for(int i = 0;i<platforms.size(); i++) {
+				platforms.remove(i);
+			}
+		}
+	}
+
+
+	@Override
+	public void paintComponent(Graphics g) {
+		
+		for(int i = 0; i<96; i++) {
+			x = (i*64)%512;
+			y = ((int)(i*64)/512) * 64;
+			g.drawImage(blue, x, y, 64, 64, null);
+
+		}
+		
+		if(currentState ==0) {
+			drawFirst(g);
+		}
+		
+		else if (currentState == 1) {
+			drawOther(g);
+		}
+		
+		
+
+
+	}
+	
+	void drawFirst(Graphics g) {
+		
+
+			player.draw(g);
+			ground.draw(g);
+
+			for(Platform p: platforms) {
+				p.draw(g);
+			}
+
+			for(Bomb b: bombs) {
+				b.draw(g);
+			}
+
+			for(Fruit f: fruits) {
+
+				f.draw(g);
+				
+				
+			}
+	}
+	
+	void updateFirst() {
 		
 		player.update();
+		addPlatform();
 		
 		for(Fruit f: fruits) {
 			f.update();
@@ -77,47 +154,27 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		for(Bomb b: bombs) {
 			b.update();
 		}
-		checkCollision();
-//		purgeItem();
-		repaint();
-
+		
+		
+		for(Platform p: platforms) {
+			
+			p.update();
+		}
 	}
 	
+	void drawOther(Graphics g) {
+		
+		
+	
+		
+		
 
-	@Override
-	protected void paintComponent(Graphics g) {
-
-		for(int i = 0; i<135; i++) {
-			x = (i*64)%960;
-			y = ((int)(i*64)/960) * 64;
-			g.drawImage(blue, x, y, 64, 64, null);
-
-		}
-
-		player.draw(g);
-		ground.draw(g);
-
-		for(Platform p: platforms) {
-			p.draw(g);
-		}
-
-		for(Bomb b: bombs) {
-			b.draw(g);
-		}
-
-		for(Fruit f: fruits) {
-
-			f.draw(g);
-			
-			
-		}
-
-
-
-		//		for(Items i: item) {
-		//			i.draw(g);
-		//		}
-
+		
+	}
+	
+	void updateOther() {
+		player.update();
+		addPlatform();
 
 	}
 	@Override
@@ -184,7 +241,9 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 		}
 	}
+	
 
+	
 	void checkCollision() {
 
 		if((player.collisionBox.intersects(ground.collisionBox))) {
@@ -194,7 +253,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			}
 
 			else {
-				player.y = 459;
+				player.y = ground.y-player.height+1;
 				player.isFalling = false;
 				player.isIdle = true;
 				player.yspeed = 0;
@@ -206,17 +265,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		for(int i = 0; i<platforms.size(); i++) {
 			Platform p = platforms.get(i);
 
-			if(player.collisionBox.intersects(p.collisionBox)) {
+//			if(player.collisionBox.intersects(p.collisionBox)) {
 
 
-				if(player.collisionBox.intersects(p.collisionBox)&& player.isJumping == true) {
+				if(player.collisionBoxes[2].intersects(p.collisionBox)&& player.isJumping == true) {
 					System.out.println("jump");
 					player.jumping();
 
 				}
-
-				else if(player.collisionBox.intersects(platform.collisionBox)&& player.isJumping == false) {
-					player.y = 51;
+				
+				else if(player.collisionBoxes[2].intersects(p.collisionBox)&& player.isJumping == false) {
+					player.y = p.y-player.height+1;
 					player.isFalling = false;
 					player.isIdle = true;
 					player.yspeed = 0;
@@ -224,33 +283,41 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 				}
 
-				else if(player.collisionBox.intersects(p2.collisionBox)&& player.isJumping == false) {
-					player.y = 351;
-					player.isFalling = false;
-					player.isIdle = true;
-					player.yspeed = 0;
+//				else if(player.collisionBoxes[2].intersects(platform.collisionBox)&& player.isJumping == false) {
+//					player.y = platform.y-player.height+1;
+//					player.isFalling = false;
+//					player.isIdle = true;
+//					player.yspeed = 0;
+//
+//
+//				}
+//
+//				else if(player.collisionBoxes[2].intersects(p2.collisionBox)&& player.isJumping == false) {
+//					player.y = 351;
+//					player.isFalling = false;
+//					player.isIdle = true;
+//					player.yspeed = 0;
+//
+//				}
 
-				}
 
+//			}
 
-			}
-
-			else {
-				if(player.collisionBox.intersects(platform.collisionBox)|| player.collisionBox.intersects(ground.collisionBox)
-						|| player.collisionBox.intersects(p2.collisionBox)) {
+//			else {
+				if(player.collisionBox.intersects(p.collisionBox)|| player.collisionBox.intersects(ground.collisionBox)) {
 					player.isIdle = true;
 					player.isFalling = false;
 				}
 				else {
 					player.isFalling = true;
 				}
-			}
+//			}
 		}
 		
 		for(int i = 0; i<fruits.size(); i++) {
 			Fruit f = fruits.get(i);
 			
-			if(f.collisionBox.intersects(ground.collisionBox) || f.y>500) {
+			if(f.collisionBox.intersects(ground.collisionBox)) {
 				f.y+=0;
 			}
 			else {
@@ -286,16 +353,24 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void addPlatform() {
-		platforms.add(p2);
-		platforms.add(platform);
+//		platforms.add(p2);
+//		platforms.add(platform);
+		if(platforms.size()<4) {
+			platforms.add(new Platform(ran.nextInt(0, 440), platformHeight-=150 , 70, 40));
+		}
+		
+//		platforms.add(new Platform(ran.nextInt(Game.WIDTH), 300, 80, 50));
+		
+		
 
 	}
 
 	void addBomb() {
-		bombs.add(new Bomb(ran.nextInt(Game.WIDTH), 0, 45, 45));
+		bombs.add(new Bomb(ran.nextInt(0, 440), 0, 30, 26));
 	}
 
 	void addFruit() {
+		
 		fruits.add(new Fruit(ran.nextInt(Game.WIDTH), 0, 20, 23));
 		
 	}
@@ -310,9 +385,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 	
 	void spawnBomb() {
-		bomb_spawn = new Timer (2000, b);
+		bomb_spawn = new Timer (4000, b);
 		bomb_spawn.start();
 	}
+	
+	
 	
 	
 	void purgeItem( ) {
