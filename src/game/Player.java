@@ -81,8 +81,6 @@ public class Player extends GameObject {
 
 	void draw(Graphics g) {
 		
-		
-		
 		System.out.println();
 		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);
 		g.drawRect(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
@@ -118,13 +116,13 @@ public class Player extends GameObject {
 			//			g.drawImage(jumpImages[0], x, y, -width, height, null);
 			//		}
 
-		} else if (isFalling == true && isLeft == false) {
+		} else if (isFalling == true && isLeft == false && isIdle == false) {
 			g.drawImage(fall, collisionBox.x, collisionBox.y, width, height, null);
 
-		} else if (isFalling == true && isLeft) {
+		} else if (isFalling == true && isLeft && isIdle == false) {
 			g.drawImage(fall, collisionBox.x+width, collisionBox.y, -width, height, null);
 
-		} 
+		}
 
 		else {
 
@@ -185,7 +183,7 @@ public class Player extends GameObject {
 		}
 		else {
 			yspeed+=1;
-			isFalling = true;
+//			isFalling = true;
 
 			if(yspeed<0) {
 				isJumping = true;
@@ -194,11 +192,13 @@ public class Player extends GameObject {
 			}
 
 			else if(yspeed>0) {
-				isFalling = true;
+//				isFalling = true;
 				isJumping = false;
 				isIdle = false;
 
 			}
+			
+			
 
 		}
 		y+=yspeed;
