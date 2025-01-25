@@ -32,6 +32,7 @@ public class Player extends GameObject {
 	boolean onSurface = false;
 	boolean isLeft;
 	boolean isIdle;
+	int jump_count = 0;
 
 
 
@@ -202,6 +203,11 @@ public class Player extends GameObject {
 
 		}
 		y+=yspeed;
+
+		
+		
+		
+		
 		
 
 	}

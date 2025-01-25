@@ -35,23 +35,30 @@ public class Fruit extends GameObject{
 	}
 
 	void draw(Graphics g) {
-		System.out.println(fruit_got);
+		
+//		System.out.println(fruit_got);
 		if(fruit_got == false) {
 			g.drawImage(fruit, x, y, width, height, null);
-		}
-		else if(fruit_got == true) {
-			g.drawImage(collectedImage[collectCurrent], x, y, width, height, null);
-			collectCurrent +=1;
 
 		}
-		
+		else if(fruit_got == true) {
+				g.drawImage(collectedImage[collectCurrent], x, y, width, height, null);
+				collectCurrent +=1;
+//				collectCurrent%= 15;
+				
+			}
+
+
+		}
+	
 
 		
 //		g.drawRect(collisionBox.x, collisionBox.y, collisionBox.width, collisionBox.height);
-	}
+	
 
 	void update() {
 		super.update();
+		
 	}	
 	
 	void fruit() {

@@ -31,9 +31,7 @@ public class Bomb extends GameObject{
 		else if(isExploded == true){
 			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
 			collectCurrent +=1;
-			if(collectCurrent>15) {
-				isExploded = false;
-			}
+			
 		}
 		
 	}
