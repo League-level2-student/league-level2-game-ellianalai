@@ -14,7 +14,8 @@ public class Bomb extends GameObject{
 	int collectCurrent;
 	int collectNum = 1;
 	BufferedImage[] Exploded;
-	boolean isExploded = false;
+	boolean explodeGround = false;
+	boolean explodePlayer = false;
 
 	public Bomb (int x, int y, int width, int height){
 		super(x,y,width,height);
@@ -25,10 +26,15 @@ public class Bomb extends GameObject{
 	}
 	
 	void draw(Graphics g) {
-		if(!isExploded) {
+		if(!explodeGround && !explodePlayer) {
 			g.drawImage(bomb, x, y, width, height, null);
 		}
-		else if(isExploded == true){
+		else if(explodeGround == true){
+			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
+			collectCurrent +=1;
+			
+		}
+		else if(explodePlayer == true){
 			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
 			collectCurrent +=1;
 			

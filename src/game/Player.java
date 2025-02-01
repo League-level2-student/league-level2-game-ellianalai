@@ -83,10 +83,19 @@ public class Player extends GameObject {
 	void draw(Graphics g) {
 		
 		System.out.println();
+		//top
 		g.drawRect(collisionBox.x, collisionBox.y, width, height/10);
+		
+		//right
 		g.drawRect(collisionBox.x-width/10 + width, collisionBox.y, width/10, height);
+		
+		//bottom
 		g.drawRect(collisionBox.x, collisionBox.y - height/10 + height, width, height/10);
+		
+		//left
 		g.drawRect(collisionBox.x, collisionBox.y, width/10, height);
+		
+		
 		g.drawRect(x, y, width, height);
 
 		//		g.setColor(Color.BLUE);
