@@ -40,8 +40,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	Color light_blue = new Color(195,238,250);
 	int hitNumber = 0;
 	int fruitNumber = 0;
-	int score = 0;
-	int currentValue; 
+	int score = 0; 
 	int oldValue;
 	Font Titlefont;
 	Font font;
@@ -64,6 +63,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		oldValue = 787;
 
 		spawnFruit();
 		spawnBomb();
@@ -122,6 +123,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 				player.y = 750;
 				platformHeight = 725;
+				oldValue = 752;
 
 			}
 			platforms.add(new Platform(player.x, 800, 70, 40));
@@ -195,7 +197,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	void update() {
 
-		currentValue = player.y;
+		
 		score();
 		player.update();
 		addPlatform();
@@ -245,7 +247,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void drawEndScreen(Graphics g) {
-
+		g.setFont(Titlefont);
+		g.drawString("Game", 137, 300);
+		g.drawString("Over", 137, 450);
+		g.setFont(font);
+		g.drawString("Press SPACE to restart", 34, 700);
 	}
 	//	
 	//	void updateOther() {
@@ -286,6 +292,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				player.yspeed = -17;
 				player.isIdle = false;
 				player.jump_count +=1;
+			}
+			
+			if(currentState == 2) {
+				currentState = 0;
 			}
 
 
@@ -347,7 +357,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 
 	void checkCollision() {
-		System.out.println(currentValue);
+		System.out.println(player.y);
+		System.out.println(currentState);
 		if(currentState == 0) {
 
 			if((player.collisionBox.intersects(ground.collisionBox))) {
@@ -501,6 +512,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 					b.y = p.y -18;
 					b.explodePlatform = true;
 				}
+				
+			if(hitNumber==3) {
+				currentState = 2;
+			}
 			}
 
 		}
@@ -566,9 +581,35 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void score() {
-		if(player.y<currentValue) {
+//		if(player.y<currentValue && currentState == 0) {
+//			score +=1;
+//			currentValue = player.y;
+//		}
+//		else if(currentState == 1){
+//			
+//			currentValue = player.y;
+//			
+//			if(player.y<currentValue) {
+//				score +=1;
+//				currentValue = player.y;
+//			}
+//		}
+		
+		if(player.y<oldValue && currentState == 0)  {
 			score +=1;
+			oldValue = player.y;
 		}
+		
+		else if(currentState == 1) {
+				
+			if(player.y<oldValue)  {
+				score +=1;
+				oldValue = player.y;
+			}
+
+		}
+		
+		
 
 
 	}
