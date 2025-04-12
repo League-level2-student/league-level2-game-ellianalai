@@ -17,6 +17,7 @@ public class Bomb extends GameObject{
 	boolean explodeGround = false;
 	boolean explodePlayer = false;
 	boolean explodePlatform = false;
+	boolean isExploded = false;
 
 	public Bomb (int x, int y, int width, int height){
 		super(x,y,width,height);
@@ -30,21 +31,24 @@ public class Bomb extends GameObject{
 		if(!explodeGround && !explodePlayer && !explodePlatform) {
 			g.drawImage(bomb, x, y, width, height, null);
 		}
-		else if(explodeGround == true){
+		else if(explodeGround == true && !isExploded){
 			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
 			collectCurrent +=1;
 			
 		}
-		else if(explodePlayer == true){
+		else if(explodePlayer == true && !isExploded){
 			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
 			collectCurrent +=1;
 			
 		}
 		
-		else if(explodePlatform == true){
+		else if(explodePlatform == true && !isExploded){
 			g.drawImage(Exploded[collectCurrent], x, y, width, height, null);
 			collectCurrent +=1;
 			
+		}
+		if(collectCurrent == 16 && !isExploded) {
+			isExploded = true;
 		}
 	}
 	

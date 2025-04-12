@@ -103,6 +103,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		//			
 		//			System.out.println(p.y);
 		//		}
+		
+//		System.out.println(platforms.size());
+		System.out.println(platforms.size());
+
 		if(currentState == 0 || currentState == 1) {
 			checkHeight();
 			update();		
@@ -116,7 +120,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	void checkHeight() {
 		if(player.y<=-150) {
 			currentState =1;
-			System.out.println("hi");
+//			System.out.println("hi");
 			for(int i = 0;i<platforms.size(); i++) {
 				platforms.remove(i);
 				i--;
@@ -197,7 +201,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	void update() {
 
-		
+
 		score();
 		player.update();
 		addPlatform();
@@ -282,24 +286,33 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode()==KeyEvent.VK_UP || e.getKeyCode()==KeyEvent.VK_SPACE) {
+			
+			if(currentState == 0 || currentState == 1) {
+				if(player.jump_count <1) {
+					player.isJumping = true;
+					player.isFalling = false;
+					player.yspeed = -17;
+					player.isIdle = false;
+					player.jump_count +=1;
+				}
+			}
+			
+
+
+
+		}
+		
+		if(e.getKeyCode()==KeyEvent.VK_SPACE) {
 			if(currentState == -1) {
 				currentState = 0;
 			}
-
-			if(player.jump_count <1) {
-				player.isJumping = true;
-				player.isFalling = false;
-				player.yspeed = -17;
-				player.isIdle = false;
-				player.jump_count +=1;
-			}
-			
 			if(currentState == 2) {
 				currentState = 0;
+				restart();
+//				hitNumber = 0;
+//				fruitNumber = 0;
+//				score = 0; 
 			}
-
-
-
 		}
 
 		//		else if(e.getKeyCode()==KeyEvent.VK_DOWN) {
@@ -357,8 +370,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 
 	void checkCollision() {
-		System.out.println(player.y);
-		System.out.println(currentState);
+//		System.out.println(player.y);
 		if(currentState == 0) {
 
 			if((player.collisionBox.intersects(ground.collisionBox))) {
@@ -515,6 +527,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 				
 			if(hitNumber==3) {
 				currentState = 2;
+				platforms = new ArrayList <Platform>();
 			}
 			}
 
@@ -529,7 +542,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 
 	void addPlatform() {
 		if(platforms.size()<5) {
-			platforms.add(new Platform(ran.nextInt(396) + 15 , platformHeight-=150 , 70, 40));
+			platformHeight-=150;
+			platforms.add(new Platform(ran.nextInt(396) + 15 , platformHeight, 70, 40));
 		}
 
 
@@ -581,19 +595,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	}
 
 	void score() {
-//		if(player.y<currentValue && currentState == 0) {
-//			score +=1;
-//			currentValue = player.y;
-//		}
-//		else if(currentState == 1){
-//			
-//			currentValue = player.y;
-//			
-//			if(player.y<currentValue) {
-//				score +=1;
-//				currentValue = player.y;
-//			}
-//		}
 		
 		if(player.y<oldValue && currentState == 0)  {
 			score +=1;
@@ -612,6 +613,36 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 		
 
 
+	}
+	
+	void restart() {
+		hitNumber = 0;
+		fruitNumber = 0;
+		score = 0; 
+		oldValue = 787;
+		platformHeight = 850;
+		player = new Player(200,800,50,50);
+//		ground = new Ground(0, 836, 512, 64);
+
+		for(int i = 0; i<fruits.size(); i++) {
+			Fruit f = fruits.get(i);
+			fruits.remove(f);
+		}
+		
+		for(int k = 0; k<bombs.size(); k++) {
+			Bomb b = bombs.get(k);
+			bombs.remove(b);
+		}
+		
+		System.out.println("reset");
+		
+
+		
+		
+//		spawnFruit();
+//		spawnBomb();
+//		background();
+		
 	}
 
 

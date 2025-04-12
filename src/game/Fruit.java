@@ -19,6 +19,7 @@ public class Fruit extends GameObject{
 	int collectNum = 1;
 	BufferedImage[] collectedImage;
 	boolean fruit_got = false; 
+	boolean isCollected = false;
 	
 
 
@@ -37,17 +38,21 @@ public class Fruit extends GameObject{
 	void draw(Graphics g) {
 		
 //		System.out.println(fruit_got);
-		if(fruit_got == false) {
+		if(fruit_got == false && !isCollected) {
 			g.drawImage(fruit, x, y, width, height, null);
 
 		}
-		else if(fruit_got == true) {
+		else if(fruit_got == true && !isCollected) {
 				g.drawImage(collectedImage[collectCurrent], x, y, width, height, null);
 				collectCurrent +=1;
 //				collectCurrent%= 15;
 				
 			}
-
+		
+		if(collectCurrent == 15 && !isCollected) {
+			isCollected = true;
+		}
+			
 
 		}
 	
